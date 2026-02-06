@@ -117,6 +117,7 @@
         <canvas id="gameCanvas" width="800" height="450"></canvas>
         <div id="deathCounter">Deaths: 0</div>
         <div id="mobileControls">
+            <button class="control-btn" id="skipLevelBtn">SKIP</button>
             <div class="control-group">
                 <button class="control-btn" id="leftBtn">&#9664;</button>
                 <button class="control-btn" id="rightBtn">&#9654;</button>
@@ -2134,7 +2135,8 @@
             leftBtn: 'left',
             rightBtn: 'right',
             jumpBtn: 'up',
-            downBtn: 'down'
+            downBtn: 'down',
+            skipLevelBtn: 'skip' // Add the new skip button here
         };
 
         // Track which buttons each touch is currently pressing
@@ -2150,6 +2152,13 @@
 
         function pressButton(btn) {
             if (!btn) return;
+
+            // Handle special buttons that don't map to `keys` object
+            if (btn.id === 'skipLevelBtn') {
+                levelComplete = true; // Trigger level transition
+                return;
+            }
+
             const keyName = mobileButtons[btn.id];
             if (!keyName) return;
 
@@ -2168,6 +2177,12 @@
 
         function releaseButton(btn) {
             if (!btn) return;
+
+            // Special buttons don't need 'keys' release
+            if (btn.id === 'skipLevelBtn') {
+                return;
+            }
+
             const keyName = mobileButtons[btn.id];
             if (!keyName) return;
 
